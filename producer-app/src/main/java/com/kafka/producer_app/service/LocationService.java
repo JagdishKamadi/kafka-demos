@@ -1,5 +1,6 @@
 package com.kafka.producer_app.service;
 
+import com.kafka.producer_app.model.Location;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,19 +14,17 @@ public class LocationService {
     private static final Logger LOGGER = LogManager.getLogger(LocationService.class);
 
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Location> kafkaTemplate;
 
-    public LocationService(KafkaTemplate<String, String> kafkaTemplate) {
+    public LocationService(KafkaTemplate<String, Location> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public String getLocation() {
-        String location = null;
-        for (int i = 0; i < 1000; i++) {
-            location = "(" + Math.round(Math.random() * 100) + " , " + Math.round(Math.random() * 100) + ")";
-            LOGGER.info("Updated location {}", location);
-            kafkaTemplate.send(TOPIC_NAME, location);
-        }
+    public Location getLocation() {
+        Location location = new Location(String.valueOf(Math.round(Math.random() * 100)), String.valueOf(Math.round(Math.random() * 100)));
+
+        LOGGER.info("Updated location {}", location);
+        kafkaTemplate.send(TOPIC_NAME, location);
         return location;
     }
 }
