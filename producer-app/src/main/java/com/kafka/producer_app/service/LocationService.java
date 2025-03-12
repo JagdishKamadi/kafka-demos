@@ -20,9 +20,12 @@ public class LocationService {
     }
 
     public String getLocation() {
-        String location = "(" + Math.round(Math.random() * 100) + " , " + Math.round(Math.random() * 100) + ")";
-        LOGGER.info("Updated location {}", location);
-        kafkaTemplate.send(TOPIC_NAME, location);
+        String location = null;
+        for (int i = 0; i < 1000; i++) {
+            location = "(" + Math.round(Math.random() * 100) + " , " + Math.round(Math.random() * 100) + ")";
+            LOGGER.info("Updated location {}", location);
+            kafkaTemplate.send(TOPIC_NAME, location);
+        }
         return location;
     }
 }
