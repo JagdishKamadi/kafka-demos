@@ -1,0 +1,37 @@
+## If face any issue while starting kakfa, delete the tmp folder from C:drive
+
+# Start ZooKeeper
+=> .\bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+# Start Kafka
+=> .\bin\windows\kafka-server-start.bat config\server.properties
+
+# Create topic
+=> .\bin\windows\kafka-topics.bat --create --topic <topic-name> --bootstrap-server localhost:9092
+
+# List topics
+=> .\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+# Describe topic
+=> .\bin\windows\kafka-topics.bat --describe --topic <topic-name> --bootstrap-server localhost:9092
+
+# Delete topic
+=> .\bin\windows\kafka-topics.bat --delete --topic <topic-name> --bootstrap-server localhost:9092
+
+# Start producer
+=> .\bin\windows\kafka-console-producer.bat --topic <topic-name> --bootstrap-server localhost:9092
+
+# Start consumer
+=> .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --bootstrap-server localhost:9092
+
+# Consumer from beginning
+=> .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --from-beginning --bootstrap-server localhost:9092
+
+# Consumer with group
+=> .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --group <group-name> --bootstrap-server localhost:9092
+
+# List consumer groups
+=> .\bin\windows\kafka-consumer-groups.bat --list --bootstrap-server localhost:9092
+
+# Describe consumer group
+=> .\bin\windows\kafka-consumer-groups.bat --describe --group <group-name> --bootstrap-server localhost:9092
