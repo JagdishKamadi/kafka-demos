@@ -11,7 +11,6 @@ import org.springframework.kafka.config.TopicBuilder;
 @Slf4j
 public class AppConfig {
 
-    // Topic name is externalized so it stays in sync with the producer in ProductServiceImpl.
     @Value("${product.kafka.topic.product-created}")
     private String productCreatedTopicName;
 

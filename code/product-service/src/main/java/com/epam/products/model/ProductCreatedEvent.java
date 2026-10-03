@@ -4,9 +4,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-/**
- * Kafka event payload published after a product has been created.
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

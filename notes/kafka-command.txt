@@ -24,6 +24,9 @@
 # Start consumer
 => .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --bootstrap-server localhost:9092
 
+# Start consumer with printing key
+=> .\bin\windows\kafka-console-consumer.bat --topic product-created-events-topic --bootstrap-server localhost:9092 --property print.key=true
+
 # Consumer from beginning
 => .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --from-beginning --bootstrap-server localhost:9092
 

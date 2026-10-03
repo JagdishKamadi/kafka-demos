@@ -21,7 +21,6 @@ public class ProductServiceImpl implements ProductService {
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
 
-    // Topic name is externalized so it stays in sync with the topic bean declared in AppConfig.
     @Value("${product.kafka.topic.product-created}")
     private String productCreatedTopicName;
 
@@ -32,7 +31,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String createProduct(Product product) {
-        // Map the inbound Product to the Kafka event payload and assign a unique correlation id.
         ProductCreatedEvent productCreatedEvent = objectMapper.convertValue(product, ProductCreatedEvent.class);
         productCreatedEvent.setProductId(UUID.randomUUID().toString());
 
