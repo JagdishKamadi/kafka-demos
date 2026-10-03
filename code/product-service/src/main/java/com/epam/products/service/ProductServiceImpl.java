@@ -3,6 +3,7 @@ package com.epam.products.service;
 import com.epam.products.model.Product;
 import com.epam.products.model.ProductCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -11,11 +12,18 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Publishes a {@link ProductCreatedEvent} to Kafka whenever a new product is created.
+ */
 @Service
 @Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
+
+    // Topic name is externalized so it stays in sync with the topic bean declared in AppConfig.
+    @Value("${product.kafka.topic.product-created}")
+    private String productCreatedTopicName;
 
     public ProductServiceImpl(ObjectMapper objectMapper, KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate) {
         this.objectMapper = objectMapper;
@@ -24,9 +32,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String createProduct(Product product) {
+        // Map the inbound Product to the Kafka event payload and assign a unique correlation id.
         ProductCreatedEvent productCreatedEvent = objectMapper.convertValue(product, ProductCreatedEvent.class);
         productCreatedEvent.setProductId(UUID.randomUUID().toString());
-        CompletableFuture<SendResult<String, ProductCreatedEvent>> kafkaResult = kafkaTemplate.send("product-created-events-topic", productCreatedEvent.getProductId(), productCreatedEvent);
+
+        // Publish asynchronously; the product id is used as the record key for partitioning.
+        CompletableFuture<SendResult<String, ProductCreatedEvent>> kafkaResult =
+                kafkaTemplate.send(productCreatedTopicName, productCreatedEvent.getProductId(), productCreatedEvent);
         kafkaResult.whenComplete((result, exception) -> {
             if (exception != null) {
                 log.error("Failed to send message: {}", exception.getMessage());
@@ -34,8 +46,6 @@ public class ProductServiceImpl implements ProductService {
                 log.info("Message sent successfully: {}", result.getRecordMetadata());
             }
         });
-        kafkaResult.join(); // blocking call,making to get response
-
 
         return productCreatedEvent.getProductId();
     }

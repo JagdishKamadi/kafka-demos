@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+/**
+ * Inbound request payload representing a product to be created.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
