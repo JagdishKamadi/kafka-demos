@@ -18,12 +18,13 @@ public class AppConfig {
 
     @Bean
     public NewTopic newTopic() {
+        // min.insync.replicas: minimum number of in-sync replica brokers required to acknowledge a write;
+        // if fewer brokers than this are available, producers using acks=all will fail to persist data.
         NewTopic newTopic = TopicBuilder.name(productCreatedTopicName)
                 .partitions(3)
                 .replicas(3)
                 .configs(Map.of("min.insync.replicas", "2"))
                 .build();
-        log.info("created topic: {}", newTopic.name());
         return newTopic;
     }
 }
