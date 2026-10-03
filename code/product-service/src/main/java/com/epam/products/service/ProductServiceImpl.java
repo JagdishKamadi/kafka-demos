@@ -13,9 +13,6 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Publishes a {@link ProductCreatedEvent} to Kafka whenever a new product is created.
- */
 @Service
 @Slf4j
 public class ProductServiceImpl implements ProductService {

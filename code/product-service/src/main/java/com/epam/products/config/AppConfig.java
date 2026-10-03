@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
+import java.util.Map;
+
 @Configuration
 @Slf4j
 public class AppConfig {
@@ -18,6 +20,8 @@ public class AppConfig {
     public NewTopic newTopic() {
         NewTopic newTopic = TopicBuilder.name(productCreatedTopicName)
                 .partitions(3)
+                .replicas(3)
+                .configs(Map.of("min.insync.replicas", "2"))
                 .build();
         log.info("created topic: {}", newTopic.name());
         return newTopic;
