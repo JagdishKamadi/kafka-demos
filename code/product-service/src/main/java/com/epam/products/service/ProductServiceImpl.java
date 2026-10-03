@@ -1,5 +1,6 @@
 package com.epam.products.service;
 
+import com.epam.products.exception.ProductNotCreatedException;
 import com.epam.products.model.Product;
 import com.epam.products.model.ProductCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Publishes a {@link ProductCreatedEvent} to Kafka whenever a new product is created.
@@ -34,17 +35,15 @@ public class ProductServiceImpl implements ProductService {
         ProductCreatedEvent productCreatedEvent = objectMapper.convertValue(product, ProductCreatedEvent.class);
         productCreatedEvent.setProductId(UUID.randomUUID().toString());
 
-        // Publish asynchronously; the product id is used as the record key for partitioning.
-        CompletableFuture<SendResult<String, ProductCreatedEvent>> kafkaResult =
-                kafkaTemplate.send(productCreatedTopicName, productCreatedEvent.getProductId(), productCreatedEvent);
-        kafkaResult.whenComplete((result, exception) -> {
-            if (exception != null) {
-                log.error("Failed to send message: {}", exception.getMessage());
-            } else {
-                log.info("Message sent successfully: {}", result.getRecordMetadata());
-            }
-        });
-
+        try {
+            // now making this call as synchronous
+            SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send(productCreatedTopicName, productCreatedEvent.getProductId(), productCreatedEvent).get();
+            log.info("Topic : {}", result.getRecordMetadata().topic());
+            log.info("Partition : {}", result.getRecordMetadata().partition());
+            log.info("Offset : {}", result.getRecordMetadata().partition());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ProductNotCreatedException("Failed to create product");
+        }
         return productCreatedEvent.getProductId();
     }
 }
