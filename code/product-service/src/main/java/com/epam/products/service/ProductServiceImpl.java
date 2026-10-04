@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
 
-    @Value("${product.kafka.topic.product-created}")
+    @Value("${kafka-config.topic.product-created}")
     private String productCreatedTopicName;
 
     public ProductServiceImpl(ObjectMapper objectMapper, KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate) {
