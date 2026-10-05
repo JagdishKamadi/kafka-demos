@@ -1,8 +1,8 @@
 package com.epam.products.service;
 
+import com.epam.events.model.ProductCreatedEvent;
 import com.epam.products.exception.ProductNotCreatedException;
 import com.epam.products.model.Product;
-import com.epam.products.model.ProductCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
