@@ -1,6 +1,6 @@
 package com.epam.products.config;
 
-import com.epam.products.model.ProductCreatedEvent;
+import com.epam.events.model.ProductCreatedEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
