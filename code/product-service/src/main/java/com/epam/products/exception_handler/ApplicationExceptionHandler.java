@@ -22,7 +22,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ErrorResponse handleUnexpectedException(Exception exception) {
         log.error("Unexpected error occurred: {}", exception.getMessage(), exception);
-        return ErrorResponse.builder(exception, HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred")
+        return ErrorResponse.builder(exception, HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage())
                 .build();
     }
 }

@@ -32,6 +32,8 @@ public class KafkaConfig {
     private String deliveryTimeoutMs;
     private String lingerMs;
     private String requestTimeoutMs;
+    private String idempotence;
+    private String maxInFlightRequestPerConnection;
     @Value("${kafka-config.topic.product-created}")
     private String productCreatedTopicName;
 
@@ -44,6 +46,9 @@ public class KafkaConfig {
         configMap.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, deliveryTimeoutMs);
         configMap.put(ProducerConfig.LINGER_MS_CONFIG, lingerMs);
         configMap.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeoutMs);
+        configMap.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, idempotence);
+        configMap.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, maxInFlightRequestPerConnection);
+        configMap.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE);
         return configMap;
     }
 
