@@ -33,6 +33,9 @@
 # Start consumer with printing key
 => .\bin\windows\kafka-console-consumer.bat --topic product-created-events-topic --bootstrap-server localhost:9092 --property print.key=true
 
+# Start the consumer in Dead Topic Mode
+=> .\bin\windows\kafka-console-consumer.bat --topic payment-events.DLT --from-beginning --bootstrap-server localhost:9092 --property "print.key=true" --property "key.separator=:"
+
 # Consumer from beginning
 => .\bin\windows\kafka-console-consumer.bat --topic <topic-name> --from-beginning --bootstrap-server localhost:9092
 
