@@ -6,8 +6,14 @@
 # Start Kafka
 => .\bin\windows\kafka-server-start.bat config\server.properties
 
+# To Start multiple Kafka server
+=> .\bin\windows\kafka-server-start.bat config\server-2.properties
+
 # Create topic
 => .\bin\windows\kafka-topics.bat --create --topic <topic-name> --bootstrap-server localhost:9092
+
+# To Send the message via CLI
+=> .\bin\windows\kafka-console-producer.bat --topic payment-events --bootstrap-server localhost:9092 --property "parse.key=true" --property "key.separator=:"
 
 # List topics
 => .\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092

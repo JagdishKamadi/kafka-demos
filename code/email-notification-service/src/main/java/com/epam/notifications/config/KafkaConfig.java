@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class KafkaConfig {
 
     private String bootstrapServers;
     private String keyDeserializer;
+    private String errorValueDeserializer;
     private String valueDeserializer;
     private String groupId;
     private String trustedPackages;
@@ -31,7 +33,8 @@ public class KafkaConfig {
         Map<String, Object> configMap = new HashMap<>();
         configMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
-        configMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
+        configMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, errorValueDeserializer);
+        configMap.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, valueDeserializer);
         configMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         configMap.put("spring.json.trusted.packages", trustedPackages);
         return configMap;
